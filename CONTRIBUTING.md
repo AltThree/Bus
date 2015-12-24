@@ -24,7 +24,7 @@ First, install the dependencies:
 $ composer install
 ```
 
-Then run `phpunit`:
+Then run PHPUnit:
 
 ```bash
 $ vendor/bin/phpunit
