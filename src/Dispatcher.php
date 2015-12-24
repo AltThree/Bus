@@ -156,7 +156,7 @@ class Dispatcher implements DispatcherContract, QueueingDispatcher
     }
 
     /**
-     * Get a parameter value for a marshaled command.
+     * Get a parameter value for a marshalled command.
      *
      * @param string               $command
      * @param \ArrayAccess         $source
