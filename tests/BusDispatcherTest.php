@@ -13,8 +13,8 @@
 use AltThree\Bus\Dispatcher;
 use GrahamCampbell\TestBenchCore\MockeryTrait;
 use Illuminate\Container\Container;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Contracts\Queue\Queue;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
 /**
  * This is the bus dispatcher test class.

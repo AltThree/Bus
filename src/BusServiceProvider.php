@@ -58,7 +58,7 @@ class BusServiceProvider extends ServiceProvider
     {
         return [
             Dispatcher::class,
-            DispatcherContract::class
+            DispatcherContract::class,
             QueueingDispatcherContract::class,
         ];
     }
