@@ -42,7 +42,7 @@ class BusServiceProvider extends ServiceProvider
     {
         $this->app->singleton(Dispatcher::class, function (Application $app) {
             return new Dispatcher($app, function ($connection = null) use ($app) {
-                $app->make(Factory::class)->connection($connection);
+                return $app->make(Factory::class)->connection($connection);
             });
         });
 
