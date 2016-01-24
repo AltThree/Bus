@@ -14,7 +14,7 @@ namespace AltThree\Bus;
 
 use Illuminate\Contracts\Bus\Dispatcher as DispatcherContract;
 use Illuminate\Contracts\Bus\QueueingDispatcher as QueueingDispatcherContract;
-use Illuminate\Contracts\Foundation\Application;
+use Illuminate\Contracts\Container\Container;
 use Illuminate\Contracts\Queue\Factory;
 use Illuminate\Support\ServiceProvider;
 
@@ -40,7 +40,7 @@ class BusServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton(Dispatcher::class, function (Application $app) {
+        $this->app->singleton(Dispatcher::class, function (Container $app) {
             return new Dispatcher($app, function ($connection = null) use ($app) {
                 return $app->make(Factory::class)->connection($connection);
             });
