@@ -1,6 +1,6 @@
 # Alt Three Bus
 
-An improved command bus for Laravel 5.2.
+An improved command bus for Laravel 5.2+.
 
 
 ## Installation
