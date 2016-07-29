@@ -148,7 +148,8 @@ class BusDispatcherTestBasicCommand
 
 class BusDispatcherTestArgumentMapping
 {
-    public $flag, $emptyString;
+    public $flag;
+    public $emptyString;
 
     public function __construct($flag, $emptyString)
     {
@@ -164,7 +165,8 @@ class BusDispatcherTestArgumentMapping
 
 class BusDispatcherTestSelfHandlingCommand
 {
-    public $firstName, $lastName;
+    public $firstName;
+    public $lastName;
 
     public function __construct($firstName, $lastName)
     {
