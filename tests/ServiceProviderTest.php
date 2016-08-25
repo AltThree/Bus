@@ -12,8 +12,8 @@
 
 namespace AltThree\Tests\Bus;
 
-use AltThree\Bus\Dispatcher;
 use AltThree\Bus\BusServiceProvider;
+use AltThree\Bus\Dispatcher;
 use GrahamCampbell\TestBench\AbstractPackageTestCase;
 use GrahamCampbell\TestBenchCore\ServiceProviderTrait;
 
