@@ -1,11 +1,11 @@
 # Alt Three Bus
 
-An improved command bus for Laravel 5.2+.
+An improved command bus for Laravel 5.2+. The current release is for Laravel 5.3, while the previous series was for 5.2 or 5.3.0-RC1 and earlier.
 
 
 ## Installation
 
-Either [PHP](https://php.net) 5.5+ or [HHVM](http://hhvm.com) 3.6+ are required.
+PHP](https://php.net) 5.6+ is required.
 
 To get the latest version of Alt Three Bus, simply require the project using [Composer](https://getcomposer.org):
 
@@ -18,7 +18,7 @@ Instead, you may of course manually update your require block and run `composer 
 ```json
 {
     "require": {
-        "alt-three/bus": "^1.0"
+        "alt-three/bus": "^2.0"
     }
 }
 ```

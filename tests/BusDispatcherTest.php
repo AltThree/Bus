@@ -10,11 +10,15 @@
  * file that was distributed with this source code.
  */
 
+namespace AltThree\Tests\Bus;
+
 use AltThree\Bus\Dispatcher;
 use GrahamCampbell\TestBenchCore\MockeryTrait;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Queue;
 use Illuminate\Contracts\Queue\ShouldQueue;
+use Mockery;
+use PHPUnit_Framework_TestCase as TestCase;
 
 /**
  * This is the bus dispatcher test class.
@@ -22,7 +26,7 @@ use Illuminate\Contracts\Queue\ShouldQueue;
  * @author Graham Campbell <graham@alt-three.com>
  * @author Taylor Otwell <taylorotwell@gmail.com>
  */
-class BusDispatcherTest extends PHPUnit_Framework_TestCase
+class BusDispatcherTest extends TestCase
 {
     use MockeryTrait;
 
@@ -30,12 +34,15 @@ class BusDispatcherTest extends PHPUnit_Framework_TestCase
     {
         $container = new Container();
         $handler = Mockery::mock('StdClass');
-        $handler->shouldReceive('handle')->once()->andReturn('foo');
-        $container->instance('Handler', $handler);
+        $handler->shouldReceive('handle')->twice()->andReturn('foo');
+        $container->instance('AltThree\Foo\BusDispatcherTestBasicCommandHandler', $handler);
         $dispatcher = new Dispatcher($container);
-        $dispatcher->mapUsing(function () {
-            return 'Handler@handle';
+        $dispatcher->mapUsing(function ($command) {
+            return Dispatcher::simpleMapping($command, 'AltThree\Tests\Bus', 'AltThree\Foo');
         });
+
+        $result = $dispatcher->dispatch(new BusDispatcherTestBasicCommand());
+        $this->assertEquals('foo', $result);
 
         $result = $dispatcher->dispatch(new BusDispatcherTestBasicCommand());
         $this->assertEquals('foo', $result);
@@ -64,7 +71,7 @@ class BusDispatcherTest extends PHPUnit_Framework_TestCase
             return $mock;
         });
 
-        $dispatcher->dispatch(new BusDispatcherTestCustomQueueCommand());
+        $dispatcher->dispatch(new BusDispatcherTestCustomQueueCommand);
     }
 
     public function testCommandsThatShouldQueueIsQueuedUsingCustomQueueAndDelay()
@@ -72,116 +79,67 @@ class BusDispatcherTest extends PHPUnit_Framework_TestCase
         $container = new Container();
         $dispatcher = new Dispatcher($container, function () {
             $mock = Mockery::mock(Queue::class);
-            $mock->shouldReceive('laterOn')->once()->with('foo', 10, Mockery::type('BusDispatcherTestSpecificQueueAndDelayCommand'));
+            $mock->shouldReceive('laterOn')->once()->with('foo', 10, Mockery::type(BusDispatcherTestSpecificQueueAndDelayCommand::class));
 
             return $mock;
         });
 
-        $dispatcher->dispatch(new BusDispatcherTestSpecificQueueAndDelayCommand());
-    }
-
-    public function testHandlersThatShouldQueueIsQueued()
-    {
-        $container = new Container();
-        $dispatcher = new Dispatcher($container, function () {
-            $mock = Mockery::mock(Queue::class);
-            $mock->shouldReceive('push')->once();
-
-            return $mock;
-        });
-        $dispatcher->mapUsing(function () {
-            return 'BusDispatcherTestQueuedHandler@handle';
-        });
-
-        $dispatcher->dispatch(new BusDispatcherTestBasicCommand());
+        $dispatcher->dispatch(new BusDispatcherTestSpecificQueueAndDelayCommand);
     }
 
     public function testDispatchNowShouldNeverQueue()
     {
-        $container = new Container();
-        $handler = Mockery::mock('StdClass');
-        $handler->shouldReceive('handle')->once()->andReturn('foo');
-        $container->instance('Handler', $handler);
-        $dispatcher = new Dispatcher($container);
-        $dispatcher->mapUsing(function () {
-            return 'Handler@handle';
+        $container = new Container;
+        $mock = Mockery::mock(Queue::class);
+        $mock->shouldReceive('push')->never();
+        $dispatcher = new Dispatcher($container, function () use ($mock) {
+            return $mock;
         });
 
-        $result = $dispatcher->dispatch(Mockery::mock(ShouldQueue::class));
-        $this->assertEquals('foo', $result);
+        $dispatcher->dispatch(new BusDispatcherBasicCommand);
     }
 
-    public function testDispatchShouldCallAfterResolvingIfCommandNotQueued()
+    public function testDispatcherCanDispatchStandAloneHandler()
     {
         $container = new Container();
-        $handler = Mockery::mock('StdClass')->shouldIgnoreMissing();
-        $handler->shouldReceive('after')->once();
-        $container->instance('Handler', $handler);
-        $dispatcher = new Dispatcher($container);
-        $dispatcher->mapUsing(function () {
-            return 'Handler@handle';
+        $mock = Mockery::mock(Queue::class);
+        $dispatcher = new Dispatcher($container, function () use ($mock) {
+            return $mock;
         });
 
-        $dispatcher->dispatch(new BusDispatcherTestBasicCommand(), function ($handler) {
-            $handler->after();
+        $dispatcher->map([StandAloneCommand::class => StandAloneHandler::class]);
+
+        $dispatcher->mapUsing(function ($command) {
+            return Dispatcher::simpleMapping($command, '', '');
         });
-    }
 
-    public function testDispatchingFromArray()
-    {
-        $instance = new Dispatcher(new Container());
-        $result = $instance->dispatchFromArray('BusDispatcherTestSelfHandlingCommand', ['firstName' => 'taylor', 'lastName' => 'otwell']);
-        $this->assertEquals('taylor otwell', $result);
-    }
+        $response = $dispatcher->dispatch(new StandAloneCommand);
 
-    public function testMarshallArguments()
-    {
-        $instance = new Dispatcher(new Container());
-        $result = $instance->dispatchFromArray('BusDispatcherTestArgumentMapping', ['flag' => false, 'emptyString' => '']);
-        $this->assertTrue($result);
+        $this->assertInstanceOf(StandAloneCommand::class, $response);
     }
+}
+
+class BusInjectionStub
+{
 }
 
 class BusDispatcherTestBasicCommand
 {
 }
 
-class BusDispatcherTestArgumentMapping
+class BusDispatcherBasicCommand
 {
-    public $flag;
-    public $emptyString;
+    public $name;
 
-    public function __construct($flag, $emptyString)
+    public function __construct($name = null)
     {
-        $this->flag = $flag;
-        $this->emptyString = $emptyString;
+        $this->name = $name;
     }
 
-    public function handle()
+    public function handle(BusInjectionStub $stub)
     {
-        return true;
+        //
     }
-}
-
-class BusDispatcherTestSelfHandlingCommand
-{
-    public $firstName;
-    public $lastName;
-
-    public function __construct($firstName, $lastName)
-    {
-        $this->firstName = $firstName;
-        $this->lastName = $lastName;
-    }
-
-    public function handle()
-    {
-        return $this->firstName.' '.$this->lastName;
-    }
-}
-
-class BusDispatcherTestQueuedHandler implements ShouldQueue
-{
 }
 
 class BusDispatcherTestCustomQueueCommand implements ShouldQueue
@@ -196,4 +154,16 @@ class BusDispatcherTestSpecificQueueAndDelayCommand implements ShouldQueue
 {
     public $queue = 'foo';
     public $delay = 10;
+}
+
+class StandAloneCommand
+{
+}
+
+class StandAloneHandler
+{
+    public function handle(StandAloneCommand $command)
+    {
+        return $command;
+    }
 }
