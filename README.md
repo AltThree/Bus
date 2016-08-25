@@ -5,7 +5,7 @@ An improved command bus for Laravel 5.2+. The current release is for Laravel 5.3
 
 ## Installation
 
-PHP](https://php.net) 5.6+ is required.
+[PHP](https://php.net) 5.6+ is required.
 
 To get the latest version of Alt Three Bus, simply require the project using [Composer](https://getcomposer.org):
 
