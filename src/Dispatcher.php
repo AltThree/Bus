@@ -32,7 +32,8 @@ class Dispatcher extends IlluminateDispatcher
     /**
      * Determine if the given command has a handler.
      *
-     * @param  mixed  $command
+     * @param mixed $command
+     *
      * @return bool
      */
     public function hasCommandHandler($command)
