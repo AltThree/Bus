@@ -23,11 +23,11 @@
     ],
     "require": {
         "php": ">=5.6.4",
-        "illuminate/bus": "5.3.*",
-        "illuminate/container": "5.3.*",
-        "illuminate/contracts": "5.3.*",
-        "illuminate/pipeline": "5.3.*",
-        "illuminate/support": "5.3.*"
+        "illuminate/bus": "5.3.*|5.4.*",
+        "illuminate/container": "5.3.*|5.4.*",
+        "illuminate/contracts": "5.3.*|5.4.*",
+        "illuminate/pipeline": "5.3.*|5.4.*",
+        "illuminate/support": "5.3.*|5.4.*"
     },
     "require-dev": {
         "graham-campbell/testbench": "^3.1",
