@@ -1,6 +1,6 @@
 # Alt Three Bus
 
-An improved command bus for Laravel 5.2+. The current release is for Laravel 5.3, while the previous series was for 5.2 or 5.3.0-RC1 and earlier.
+An improved command bus for Laravel 5.2+. The current release is for Laravel 5.3+, while the previous series was for 5.2 or 5.3.0-RC1 and earlier.
 
 
 ## Installation
