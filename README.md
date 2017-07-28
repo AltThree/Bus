@@ -5,7 +5,7 @@ An improved command bus for Laravel 5.
 
 ## Installation
 
-This version requires [PHP](https://php.net) 7, and supports Laravel 5.3, or 5.4.
+This version requires [PHP](https://php.net) 7, and supports Laravel 5.3, 5.4, or 5.5.
 
 To get the latest version, simply require the project using [Composer](https://getcomposer.org):
 
