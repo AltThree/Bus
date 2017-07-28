@@ -70,13 +70,13 @@ class Dispatcher extends IlluminateDispatcher
     /**
      * Map the command to a handler within a given root namespace.
      *
-     * @param mixed  $command
+     * @param object $command
      * @param string $commandNamespace
      * @param string $handlerNamespace
      *
      * @return string
      */
-    public static function simpleMapping($command, $commandNamespace, $handlerNamespace)
+    public static function simpleMapping($command, string $commandNamespace, string $handlerNamespace)
     {
         $command = str_replace($commandNamespace, '', get_class($command));
 
