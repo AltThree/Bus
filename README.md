@@ -15,6 +15,8 @@ $ composer require alt-three/bus
 
 Once installed, you need to remove the `Illuminate\Bus\BusServiceProvider` and replace it with the `AltThree\Bus\BusServiceProvider` service provider in your `config/app.php`.
 
+*Note: This package WILL NOT be picked up by Laravel 5.5's automatic package discovery, because of it's non-standard requirement of replacing a service provider from the core.*
+
 
 ## Security
 
