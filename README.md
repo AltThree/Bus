@@ -1,6 +1,10 @@
 # Alt Three Bus
 
-An improved command bus for Laravel 5.
+[![Build Status](https://img.shields.io/travis/AltThree/Bus/master.svg?style=flat-square)](https://travis-ci.org/AltThree/Bus)
+[![StyleCI](https://github.styleci.io/repos/48430841/shield?branch=master)](https://github.styleci.io/repos/48430841)
+[![License](https://img.shields.io/badge/license-MIT-brightgreen.svg?style=flat-square)](LICENSE)
+
+**An improved command bus for Laravel 5.**
 
 
 ## Installation
