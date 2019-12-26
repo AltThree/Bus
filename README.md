@@ -1,4 +1,4 @@
-# ![Alt Three Bus](https://user-images.githubusercontent.com/2829600/71490847-0de16e00-2825-11ea-8897-b42ef351832e.png)
+![Alt Three Bus](https://user-images.githubusercontent.com/2829600/71490847-0de16e00-2825-11ea-8897-b42ef351832e.png)
 
 <p align="center">
 <a href="https://github.styleci.io/repos/48430841"><img src="https://github.styleci.io/repos/48430841/shield?branch=master" alt="StyleCI Status"></img></a>
