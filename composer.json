@@ -1,6 +1,6 @@
 {
     "name": "alt-three/bus",
-    "description": "An improved command bus for Laravel 5",
+    "description": "An improved command bus for Laravel",
     "keywords": ["bus", "command", "job", "command bus", "Bus", "Alt Three"],
     "license": "MIT",
     "authors": [
