@@ -28,6 +28,11 @@
             "AltThree\\Bus\\": "src/"
         }
     },
+    "autoload-dev": {
+        "psr-4": {
+            "AltThree\\Tests\\Bus\\": "tests/"
+        }
+    },
     "config": {
         "preferred-install": "dist"
     },

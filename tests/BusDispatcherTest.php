@@ -15,6 +15,14 @@ declare(strict_types=1);
 namespace AltThree\Tests\Bus;
 
 use AltThree\Bus\Dispatcher;
+use AltThree\Tests\Bus\Stubs\BusDispatcherBasicCommand;
+use AltThree\Tests\Bus\Stubs\BusDispatcherTestBasicCommand;
+use AltThree\Tests\Bus\Stubs\BusDispatcherTestCustomQueueCommand;
+use AltThree\Tests\Bus\Stubs\BusInjectionStub;
+use AltThree\Tests\Bus\Stubs\BusDispatcherTestSpecificQueueAndDelayCommand;
+use AltThree\Tests\Bus\Stubs\Handlers\BusDispatcherTestBasicCommandHandler;
+use AltThree\Tests\Bus\Stubs\StandAloneCommand;
+use AltThree\Tests\Bus\Stubs\StandAloneHandler;
 use GrahamCampbell\TestBenchCore\MockeryTrait;
 use Illuminate\Container\Container;
 use Illuminate\Contracts\Queue\Queue;
@@ -35,19 +43,20 @@ class BusDispatcherTest extends TestCase
     public function testBasicDispatchingOfCommandsToHandlers()
     {
         $container = new Container();
-        $handler = Mockery::mock('StdClass');
-        $handler->shouldReceive('handle')->twice()->andReturn('foo');
-        $container->instance('AltThree\Foo\BusDispatcherTestBasicCommandHandler', $handler);
+        $handler = new BusDispatcherTestBasicCommandHandler();
+        $container->instance(BusDispatcherTestBasicCommandHandler::class, $handler);
         $dispatcher = new Dispatcher($container);
         $dispatcher->mapUsing(function ($command) {
-            return Dispatcher::simpleMapping($command, 'AltThree\Tests\Bus', 'AltThree\Foo');
+            return Dispatcher::simpleMapping($command, 'AltThree\Tests\Bus\Stubs', 'AltThree\Tests\Bus\Stubs\Handlers');
         });
 
         $result = $dispatcher->dispatch(new BusDispatcherTestBasicCommand());
-        $this->assertEquals('foo', $result);
+        $this->assertSame('foo', $result);
 
         $result = $dispatcher->dispatch(new BusDispatcherTestBasicCommand());
-        $this->assertEquals('foo', $result);
+        $this->assertSame('foo', $result);
+
+        $this->assertSame(2, $handler->count);
     }
 
     public function testCommandsThatShouldQueueIsQueued()
@@ -118,54 +127,5 @@ class BusDispatcherTest extends TestCase
         $response = $dispatcher->dispatch(new StandAloneCommand());
 
         $this->assertInstanceOf(StandAloneCommand::class, $response);
-    }
-}
-
-class BusInjectionStub
-{
-}
-
-class BusDispatcherTestBasicCommand
-{
-}
-
-class BusDispatcherBasicCommand
-{
-    public $name;
-
-    public function __construct($name = null)
-    {
-        $this->name = $name;
-    }
-
-    public function handle(BusInjectionStub $stub)
-    {
-        //
-    }
-}
-
-class BusDispatcherTestCustomQueueCommand implements ShouldQueue
-{
-    public function queue($queue, $command)
-    {
-        $queue->push($command);
-    }
-}
-
-class BusDispatcherTestSpecificQueueAndDelayCommand implements ShouldQueue
-{
-    public $queue = 'foo';
-    public $delay = 10;
-}
-
-class StandAloneCommand
-{
-}
-
-class StandAloneHandler
-{
-    public function handle(StandAloneCommand $command)
-    {
-        return $command;
     }
 }

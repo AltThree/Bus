@@ -48,7 +48,7 @@ class Dispatcher extends IlluminateDispatcher
 
         $callback = $this->mapper;
 
-        if (!$callback || method_exists($command, 'handle')) {
+        if ($callback === null || method_exists($command, 'handle') || (method_exists($this, 'dispatchSync') && method_exists($command, '__invoke'))) {
             return false;
         }
 
