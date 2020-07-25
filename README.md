@@ -14,7 +14,7 @@
 Alt Three Bus is an improved command bus for Laravel. This version requires [PHP](https://php.net) 7.1-7.4, and supports Laravel 5.5-7. Simply require the package using [Composer](https://getcomposer.org):
 
 ```bash
-$ composer require alt-three/bus:^4.4
+$ composer require alt-three/bus:^4.5
 ```
 
 This package **will not** be picked up by Laravel's automatic package discovery. Once installed, you need to **remove** the `Illuminate\Bus\BusServiceProvider` and **replace** it with the `AltThree\Bus\BusServiceProvider` service provider in your `config/app.php`.
