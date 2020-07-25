@@ -18,7 +18,6 @@ use AltThree\Bus\Dispatcher;
 use AltThree\Tests\Bus\Stubs\BusDispatcherBasicCommand;
 use AltThree\Tests\Bus\Stubs\BusDispatcherTestBasicCommand;
 use AltThree\Tests\Bus\Stubs\BusDispatcherTestCustomQueueCommand;
-use AltThree\Tests\Bus\Stubs\BusInjectionStub;
 use AltThree\Tests\Bus\Stubs\BusDispatcherTestSpecificQueueAndDelayCommand;
 use AltThree\Tests\Bus\Stubs\Handlers\BusDispatcherTestBasicCommandHandler;
 use AltThree\Tests\Bus\Stubs\StandAloneCommand;
